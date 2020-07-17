@@ -1,29 +1,17 @@
-# Note: there are many handy hints in comments in this example -- remove them when you've finalized your recipe
-
-# Jinja variables help maintain the recipe as you'll update the version only here.
-# Using the name variable with the URL in line 14 is convenient
-# when copying and pasting from another recipe, but not really needed.
 {% set name = "lcio" %}
-{% set version = "02-14-02" %}
+{% set tag_version = "02-14-02" %}
+{% set major, minor, patch = tag_version.split("-") %}
 
 package:
   name: {{ name|lower }}
-  version: {{ version }}
+  version: {{ major.lstrip("0") or "0" }}.{{ minor.lstrip("0") or "0" }}.{{ patch.lstrip("0") or "0" }}
 
 source:
-  # If getting the source from GitHub, remove the line above,
-  # uncomment the line below, and modify as needed. Use releases if available:
-  # url: https://github.com/simplejson/simplejson/releases/download/{{ version }}/simplejson-{{ version }}.tar.gz
-  # and otherwise fall back to archive: 
-  url: https://github.com/simplejson/simplejson/archive/v{{ version }}.tar.gz
+  url: https://github.com/iLCSoft/LCIO/archive/v{{ tag_version }}.tar.gz
   sha256: e64f4bf932edf6d6cdaf0162e5104f8fbf3e5fd9737c7a080c48859009621919
-  # sha256 is the preferred checksum -- you can get it for a file with:
-  #  `openssl sha256 <file name>`.
-  # You may need the openssl package, available on conda-forge:
-  #  `conda install openssl -c conda-forge``
 
 build:
-  number: {{ build }}
+  number: 0
   skip: True  # [win]
 
 # Specifying `compiler('cxx')` as a top-level build requirements to force
@@ -45,31 +33,24 @@ outputs:
         - cmake
         - make  # [unix]
       host:
-        - root
+        - root_base
+        - root-binaries
         - zlib
 
 about:
-  home: https://github.com/simplejson/simplejson
-  # Remember to specify the license variants for BSD, Apache, GPL, and LGPL.
-  # Prefer the short version, e.g: GPL-2.0 instead of GNU General Public License version 2.0
-  # See https://opensource.org/licenses/alphabetical
-  license: MIT
-  # The license_family, i.e. "BSD" if license is "BSD-3-Clause". (optional)
-  license_family: MIT
-  # It is strongly encouraged to include a license file in the package,
-  # (even if the license doesn't require it) using the license_file entry.
-  # See https://docs.conda.io/projects/conda-build/en/latest/resources/define-metadata.html#license-file
-  license_file: LICENSE.txt
-  summary: 'Simple, fast, extensible JSON encoder/decoder for Python'
+  home: https://github.com/iLCSoft/LCIO/
+  license: BSD-3-Clause
+  license_family: BSD
+  license_file: LICENSE
+  summary: 'A persistency framework and event data model for linear collider detector studies'
 
-  # The remaining entries in this section are optional, but recommended.
+
   description: |
-    simplejson is a simple, fast, complete, correct and extensible
-    JSON <https://json.org> encoder and decoder for Python 2.5+ and
-    Python 3.3+. It is pure Python code with no dependencies, but includes
-    an optional C extension for a serious speed boost.
-  doc_url: https://simplejson.readthedocs.io/
-  dev_url: https://github.com/simplejson/simplejson
+    A common persistency format and event data model allows to easily share
+    results and compare reconstruction algorithms. LCIO is used by almost
+    all groups involved in linear collider detector studies and thus has become a de facto standard.
+  doc_url: https://ilcsoft.desy.de/LCIO/current/doc/doxygen_api/html/
+  dev_url: https://github.com/iLCSoft/LCIO/
 
 extra:
   recipe-maintainers:
