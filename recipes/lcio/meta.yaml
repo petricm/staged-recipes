@@ -20,22 +20,16 @@ requirements:
   build:
     - {{ compiler('cxx') }}
 
-
-outputs:
-  - name: lcio
-    version: {{ version }}
-    build:
-      script: $RECIPE_DIR/build_lcio.sh
-    requirements:
-      build:
-        - {{ compiler('c') }}
-        - {{ compiler('cxx') }}
-        - cmake
-        - make  # [unix]
-      host:
-        - root_base
-        - root-binaries
-        - zlib
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - cmake
+    - make  # [unix]
+  host:
+    - root_base
+    - root-binaries
+    - zlib
 
 about:
   home: https://github.com/iLCSoft/LCIO/
@@ -43,8 +37,6 @@ about:
   license_family: BSD
   license_file: LICENSE
   summary: 'A persistency framework and event data model for linear collider detector studies'
-
-
   description: |
     A common persistency format and event data model allows to easily share
     results and compare reconstruction algorithms. LCIO is used by almost
